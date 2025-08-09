@@ -20,4 +20,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="2.80.3" />
+  </ItemGroup>
+
 </Project>

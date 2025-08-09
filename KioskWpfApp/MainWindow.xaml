@@ -4,79 +4,187 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KioskWpfApp"
+        
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-        <Canvas x:Name="MainScreen" Background="Black" Margin="-2,0,1,0" Visibility="Collapsed" >
-            <Image Source="tim-mossholder-FH3nWjvia-U-unsplash.jpg" MouseLeftButtonDown="MainMouseLeftButtonDown" 
+
+    <Window.Resources>
+        <Storyboard x:Key="DotsLoadingStoryboard" RepeatBehavior="Forever">
+            <!-- Dot1 fade in -->
+            <DoubleAnimation Storyboard.TargetName="Dot1" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0" />
+            <!-- Dot2 fade in -->
+            <DoubleAnimation Storyboard.TargetName="Dot2" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0.4" />
+            <!-- Dot3 fade in -->
+            <DoubleAnimation Storyboard.TargetName="Dot3" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0.8" />
+            <!-- Dot1 fade out -->
+            <DoubleAnimation Storyboard.TargetName="Dot1" Storyboard.TargetProperty="Opacity"
+                             From="1" To="0" Duration="0:0:1" BeginTime="0:0:1.1" />
+            <!-- Dot2 fade out -->
+            <DoubleAnimation Storyboard.TargetName="Dot2" Storyboard.TargetProperty="Opacity"
+                             From="1" To="0" Duration="0:0:1" BeginTime="0:0:1.1" />
+            <!-- Dot3 fade out -->
+            <DoubleAnimation Storyboard.TargetName="Dot3" Storyboard.TargetProperty="Opacity"
+                             From="1" To="0" Duration="0:0:1" BeginTime="0:0:1.1" />
+        </Storyboard>
+    </Window.Resources>
+    
+    <Grid>
+       
+        <Grid x:Name="MainScreen" Background="Black" Visibility="Visible" >
+            <!--<Image Source="tim-mossholder-FH3nWjvia-U-unsplash.jpg" MouseLeftButtonDown="MainMouseLeftButtonDown" 
            Stretch="Fill"
            Width="563" Height="279" Canvas.Left="94" Canvas.Top="3"
-               Cursor="Hand"/>
-
-            <TextBox Text=">"
+               Cursor="Hand"/>-->
+           <Border Padding="0, 90, 0, 0">
+                <TextBlock Text="Place an order >>>"
              Background="Transparent"
              Foreground="White"
-             FontSize="120"
-             BorderThickness="0"
-             Width="100" Height="156"
-             Canvas.Left="541"
-             Canvas.Top="117" RenderTransformOrigin="0.49,0.596" MouseLeftButtonDown="MainMouseLeftButtonDown"
+             FontSize="40"
+             
+             Width="347" Height="156"
+             VerticalAlignment="Center"
+             MouseLeftButtonDown="ToggleScreens"
              Cursor="Hand"/>
-        </Canvas>
+           </Border>
+
+           
+        </Grid>
 
 
-        <Canvas x:Name="SecondScreen" Background="LightBlue" Visibility="Visible">
+        <Grid x:Name="SecondScreen" Background="LightBlue" Visibility="Hidden">
+            <StackPanel Orientation="Horizontal" Background="Transparent">
+                <Border Padding="150, 60,0,0" IsHitTestVisible="True" Background="Transparent">
+                    <TextBlock Text="↩ Go Back" 
+                           FontSize="36"
+                           FontFamily="Segoe Script"
+                           Foreground="#00FFFF"
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,20"
+                           Background="Transparent"
+                           IsHitTestVisible="True"
+                           MouseLeftButtonDown="ToggleScreens"
+                           Cursor="Hand">
+                           <TextBlock.Effect>
+                           <DropShadowEffect Color="#00FFFF"
+                          BlurRadius="20"
+                          ShadowDepth="0"
+                          Opacity="1"
+                                            
+                                             
+                          />
+                        </TextBlock.Effect>
+                    </TextBlock>
 
-            <!-- Optional back button -->
-            <Button Content="Back"
-            Canvas.Left="10" Canvas.Top="10"/>
+
+                </Border>
+            </StackPanel>
+            <Border Padding="0, 60,0,0">
+
+                <TextBlock Text="Place Your Order" 
+                   FontSize="36"
+                   FontFamily="Segoe Script"
+                   Foreground="#00FFFF"
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,20">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#00FFFF"
+                                  BlurRadius="20"
+                                  ShadowDepth="0"
+                                  Opacity="1"/>
+                        </TextBlock.Effect>
+                </TextBlock>
+            </Border>
 
 
-            <ListBox ItemsSource="{Binding ImageList}"
-             Canvas.Left="0" Canvas.Top="60"
-             Width="760" Height="220"
-             Background="Transparent"
+            <StackPanel>
+                <!-- Optional back button -->
+                <Grid x:Name="Images" Margin="0,200,0,0">
+                    <!--<Button Content="Back"/>-->
+
+                    <Border Padding="0, 50, 0, 0" Background="Transparent" BorderThickness="0" BorderBrush="Transparent">
+                        <ListBox ItemsSource="{Binding ImageList}"
+             
+             Width="1500" Height="220"
+             Background="white"
              BorderThickness="0"
              ScrollViewer.HorizontalScrollBarVisibility="Auto"
              ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal"
+                            <ListBox.ItemsPanel >
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"
                                         IsVirtualizing="True"
                                         VirtualizationMode="Recycling"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
 
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="300" Height="200" Margin="5">
-                            <Image Source="{Binding ImagePath}"
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="300" Height="200" Margin="5">
+                                        <Image Source="{Binding ImagePath}"
                            Stretch="Fill"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"
-                           MouseLeftButtonDown="Image_Click"/>
+                           MouseLeftButtonDown="Image_Click"
+                           Cursor="Hand"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Grid>
+
+                <Grid x:Name="Order" Visibility="Hidden">
+                    <Border Padding="0,70">
+                        <Border Width="350" Padding="20" Background="White" CornerRadius="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel>
+
+                                <TextBlock x:Name="OrderBox" TextWrapping="Wrap" Text="Do you want to order?" 
+                                   FontSize="18"
+                                   TextAlignment="Center"
+                                   Margin="0,0,0,20">
+                                   
+                                </TextBlock>
+                                          
+                                          
+
+
+                                <StackPanel x:Name="OrderButtons"  Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
+                                    <Button Content="Yes" Width="80" Margin="10,0" Click="OrderYes_MouseLeftButtonDown"/>
+                                    <Button Content="No" Width="80" Margin="10,0" Click="OrderNo_MouseLeftButtonDown"/>
+                                </StackPanel>
+                            </StackPanel>
+                            
                         </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Grid x:Name="Order" Visibility="Hidden">
-                <TextBox x:Name="OrderBox" Width="322" Height="116" HorizontalContentAlignment="Center" RenderTransformOrigin="0.498,0.593" Canvas.Top="276" Canvas.Left="170" Margin="166,297,-166,-297">
-                    Do you want to Order ?
-
-                </TextBox>
-                <Button Content="Yes" Height="27" Canvas.Left="244" Canvas.Top="352" Width="70" Margin="243,365,9,-276" Click="OrderYes_MouseLeftButtonDown"/>
-                <Button Content="No" Height="27" Canvas.Left="345" Canvas.Top="352" Width="70" Margin="326,365,-74,-276" Click="OrderNo_MouseLeftButtonDown"/>
-            </Grid> 
+                    </Border>
+                    <Grid.RenderTransform>
+                        <TranslateTransform x:Name="OrderBoxTransform"/>
+                    </Grid.RenderTransform>
+                </Grid>
 
 
+            </StackPanel>
+            <Grid x:Name="Dots_Loading_Animation"  HorizontalAlignment="Center" Margin="0, 720, 0 , 0" Visibility="Hidden">
+                <TextBlock
+                   Foreground="Black">Din beställning hanteras
+                </TextBlock>
 
+                <Border>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Ellipse Width="15" Height="15" Fill="Black" Margin="5,0" x:Name="Dot1" Opacity="0" />
+                        <Ellipse Width="15" Height="15" Fill="Black" Margin="5,0" x:Name="Dot2" Opacity="0" />
+                        <Ellipse Width="15" Height="15" Fill="Black" Margin="5,0" x:Name="Dot3" Opacity="0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-        </Canvas>
-    </Grid>
+        </Grid>
 
-
+     </Grid>
 </Window>
